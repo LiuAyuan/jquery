@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<style>
+	div{
+	float:left;
+	}
+	#div{
+	width:100px;
+	height:100px;
+	border:1px solid #ccc;
+	}
+	#animation{
+	width:200px;
+	height:200px;
+	border-radius:50%;
+	background:red;
+	margin:0 auto;
+	}
+	#chaining{
+	width:100px;
+	height:100px;
+	background:green;
+	opacity:1;
+	
+	}
+	.get{
+	width:200px;
+	height:100px;
+	border:1px dashed red;
+	margin:4px;
+	}
+	#changeDiv{
+	width:200px;
+	height:100px;
+	border:1px solid #ccc;
+	}
+	#delegateDiv{
+	width:100px;
+	height:100px;
+	border:1px solid green;
+	}
+	#preventDefault{
+	width:100px;
+	height:200px;
+	background:#ccc;
+	}
+	#eventWhich{
+	width:200px;
+	height:200px;
+	border:1px solid #ccc;
+	margin:10px;
+	}
+	#on{
+	width:100px;
+	height:100px;
+	border:1px solid #ccc;
+	margin:10px;
+	}
+	#resize{
+	width:100px;
+	height:100px;
+	border:1px solid #ccc;
+	margin:10px;
+	}
+	#scroll{
+	width:200px;
+	height:100px;
+	overflow:scroll;
+	background:yellow;
+	}
+	#select{
+	width:200px;
+	height:100px;
+	border:1px solid #ccc;
+	margin:10px;
+	}
+	</style>
+</head>
+<body>
+<div id="div">
+改变高度
+</div>
+<div id="animation">
+动画
+</div>
+<div id="chaining">
+jquery中方法的连接
+</div>
+<div>
+	<div id="text" class="get">
+		获取文本内容
+	</div>
+	<div id="html" class="get">
+		<p>获取文本内容和标签</p>
+	</div>
+	<div id="input" class="get">
+		<input type="text" id="getInput" />
+	</div>
+	<div id="changeDiv">
+		<input type="text" id="change"/>
+	</div>
+	<div id="delegateDiv">
+		<p id="p1">delegate()方法向函数传递数据(点击我)</p>
+	</div>
+	<div id="preventDefault">
+		<a href="www.baidu.com">阻止默认程序，防止表单提交</a>
+	</div>
+	<div id="eventWhich">
+		<input type="text" value="返回指定事件上哪个键盘键或者鼠标按钮被按下"/>
+	</div>
+	<div id="on">
+		<p>on()方法在被选元素及子元素上添加一个或者多个事件处理程序</p>
+	</div>
+	<div id="resize">
+		当窗口改变的时候，就会触发resize（）函数
+	</div>
+	<div id="scroll">
+		scroll()适用于所有可滚动的元素和浏览器窗口
+		当用户滚动指定的元素时，会发生 scroll 事件。
+		scroll 事件适用于所有可滚动的元素和 window 对象（浏览器窗口）。
+		scroll() 方法触发 scroll 事件，或规定当发生 scroll 事件时运行的函数。
+	</div>
+	<div id="select">
+		<input type="text" value="输入内容"/>
+	</div>
+</div>
+<script>
+$(document).ready(function(){
+	//1
+	$("#div").height(300);
+	//2
+	$("#animation").click(function(){
+		$("#animation").animate({
+			left:"250px",
+			height:"150px",
+			width:"150px",
+			opacity:"0.5"
+		});
+	})
+	//3
+	$("#chaining").css("opacity","0.5").slideUp(2000).slideDown(2000);
+	//4
+	$("#text").hover(function(){
+		var text=$("#text").text();
+		console.log(text);
+	},function(){console.log('没有任何内容！')})
+	//5
+	$("#html").hover(function(){
+		var html=$("#html").html();
+		console.log(html);
+	},function(){console.log("没有任何内容！")})
+	
+	//6
+	 $("#getInput").blur(function(){
+    console.log("Value: " + $("#getInput").val());
+	});
+	//7
+	$("#change").change(function(){
+		var myVal=$("#change").val();
+		console.log(myVal);
+	})
+	//8
+	$("#p1").delegate({msg:"点击了我！"},"click",function(e){
+		alert(e.data.msg);
+	});
+	//9
+	$("#preventDefault a").click(function(e){
+		event.preventDefault();
+	});
+	//10
+	$("#eventWhich input").keydown(function(e){
+		$("#eventWhich").html("key:"+event.which);
+	});
+	//11
+	$("#on p").on({
+		mouseover:function(){$("#on").css("background-color","lightgray");},  
+		mouseout:function(){$("#on").css("background-color","lightblue");}, 
+		click:function(){$("#on").css("background-color","yellow");}  
+	});
+	//12
+	$(window).resize(function(){
+		$("#resize").css("background","red");
+	});
+	//13
+	$("#scroll").scroll(function(){
+		$("#scroll").css('color','green').animate({width:"100px",height:"200px"});
+	});
+	//14
+	$("#select input").select(function(){
+		var choseContent=$("#select input").val();
+		$("#select input").after(choseContent);
+	})
+	
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单文本编辑器</title>
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.js"></script>
+	<script type="text/javascript" src="js/tiny_mce.js"></script>
+</head>
+<body>
+<script>
+tinyMCE.init({
+	mode:"textarea",
+	theme:"simiple",
+	//当改变时更新验证状态
+	onchange_callback:function(){
+		tinyMCE.triggerSave();
+		$("#"+editor.id).valid();
+	}
+});
+$(function(){
+	var validator=$("#myForm").submit(function(){
+		//再提交验证之前更新相关的文本框
+		tinyMCE.triggerSave();
+	}).validate({
+		ignore:"required",
+		rules:{
+			title:"required",
+			content:"required"
+		},
+		errorPlacement:function(){
+		//在生成文本框之后定位错误标签
+			if(element.is("textarea")){
+				label.insertAfter(element.next());
+			}else{
+				label.insertAfter(element);
+			}
+		}
+	});
+	validator.focusInvalid=function(){
+	//当提交验证时防止焦点在tingmcea上
+		if(this.settings.focusInvalid){
+			try{
+				var toFocus=$(this.findLastActive()||this.errorList.length&&this.errorList[0].element||[]);
+				if(toFocus.is("textarea")){
+					tinyMCE.get(toFocus.attr("id")).focus();
+				}else{
+					toFocus.filter(":visible").focus();
+				}
+			}catch(e){
+				//当聚焦在隐藏的元素上时候忽略ie抛出的错误
+			}
+		}
+	}
+});
+</script>
+<form id="myform" action="" novalidate="novalidate">
+<h3>TinyMCE 和 Validate 插件交互实例</h3>
+<label>字段</label>
+<input name="title" aria-required="true" class="error" aria-invalid="true"><label id="title-error" class="error" for="title">This field is required.</label>
+<br>
+<label>文本</label>
+<textarea id="content" name="content" rows="15" cols="80" style="width: 80%; display: none;" aria-required="true" aria-invalid="false" class="valid"></textarea><span id="content_container" class="mceEditor defaultSimpleSkin"><table cellpadding="0" cellspacing="0" class="mceLayout" style="width: 80%; height: 231px;"><tbody><tr><td><div class="mceIframeContainer" style="background"><iframe id="content_ifr" src='javascript:""' frameborder="0" style="width: 100%; height: 211px;"></iframe></div></td></tr><tr class="last"><td class="mceToolbar mceLast" align="center"><table id="content_tools1" class="mceToolbar Enabled" cellpadding="0" cellspacing="0" align=""><tbody><tr><td class="mceToolbarStart mceToolbarStartButton"><span><!-- IE --></span></td><td><a id="content_bold" href="javascript:;" class="mceButton mceButtonEnabled mce_bold" onmousedown="return false;" onclick="return false;" title="Bold (Ctrl+B)"><span class="mceIcon mce_bold"></span></a></td><td><a id="content_italic" href="javascript:;" class="mceButton mceButtonEnabled mce_italic" onmousedown="return false;" onclick="return false;" title="Italic (Ctrl+I)"><span class="mceIcon mce_italic"></span></a></td><td><a id="content_underline" href="javascript:;" class="mceButton mceButtonEnabled mce_underline" onmousedown="return false;" onclick="return false;" title="Underline (Ctrl+U)"><span class="mceIcon mce_underline"></span></a></td><td><a id="content_strikethrough" href="javascript:;" class="mceButton mceButtonEnabled mce_strikethrough" onmousedown="return false;" onclick="return false;" title="Strikethrough"><span class="mceIcon mce_strikethrough"></span></a></td><td><span class="mceSeparator"></span></td><td><a id="content_undo" href="javascript:;" class="mceButton mceButtonEnabled mce_undo" onmousedown="return false;" onclick="return false;" title="Undo (Ctrl+Z)"><span class="mceIcon mce_undo"></span></a></td><td><a id="content_redo" href="javascript:;" class="mceButton mceButtonEnabled mce_redo" onmousedown="return false;" onclick="return false;" title="Redo (Ctrl+Y)"><span class="mceIcon mce_redo"></span></a></td><td><span class="mceSeparator"></span></td><td><a id="content_cleanup" href="javascript:;" class="mceButton mceButtonEnabled mce_cleanup" onmousedown="return false;" onclick="return false;" title="Cleanup messy code"><span class="mceIcon mce_cleanup"></span></a></td><td><span class="mceSeparator"></span></td><td><a id="content_insertunorderedlist" href="javascript:;" class="mceButton mceButtonEnabled mce_insertunorderedlist" onmousedown="return false;" onclick="return false;" title="Unordered list"><span class="mceIcon mce_insertunorderedlist"></span></a></td><td><a id="content_insertorderedlist" href="javascript:;" class="mceButton mceButtonEnabled mce_insertorderedlist" onmousedown="return false;" onclick="return false;" title="Ordered list"><span class="mceIcon mce_insertorderedlist"></span></a></td><td class="mceToolbarEnd mceToolbarEndButton"><span><!-- IE --></span></td></tr></tbody></table></td></tr></tbody></table></span>
+<br>
+<input type="submit" name="save" value="提交">
+</form>
+</body>
+</html>

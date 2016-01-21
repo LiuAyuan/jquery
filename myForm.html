@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.js"></script>
+	<script type="text/javascript" src="js/messages_cn.js"></script>
+	<style>
+	span{
+        color:red;
+
+	}
+	</style>
+</head>
+<body>
+<form id="myForm" method="get" action="">
+    <p>
+        <label for="firstname">Firstname</label>
+        <input id="firstname" name="firstname"  title="请输入您的用户名（至少 3 个字符）" required minlength="3" />
+		<span class="error"></span>
+    </p>
+ <p>
+  <label for="email">E-Mail</label>
+  <input id="email" name="email" data-rule-required="true" data-rule-email="true" data-msg-required="请输入您的电子邮件地址" data-msg-email="请输入一个有效的电子邮件地址" />
+  <span class="error"></span>
+ </p>
+ <p>
+  <label for="password">Password</label>
+  <input id="password" name="password" type="password" required minlength="5"  />
+  <span class="error"></span>
+ </p>
+ <p>
+  <label for="confirm_password">确认密码</label>
+  <input id="confirm_password" name="confirm_password" type="password" required minlength="5" equalTo="#password"  />
+  <span class="error"></span>
+ </p>
+    <p>
+        <input class="submit" type="submit" value="Submit"/>
+		<input class="cancel" type="submit" value="reset">
+
+    </p>
+	<div id="container"></div>
+</form>
+<script>
+$.validator.setDefaults({
+	submitHandler:function(){
+		alert("已经提交");
+	}
+});
+$().ready(function() {
+var container = $('span.error');
+	// 当提交时验证表单
+	var validator = $("#myForm").validate({
+		errorContainer: container,
+		errorLabelContainer: $("p", container),
+		wrapper: 'span'
+	});
+
+	$(".cancel").click(function() {
+		validator.resetForm();
+	});
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+	<style>
+		.cmxform fieldset p.error label{color:red;}
+		div.container{
+			background-color:#eee;
+			border:1px solid red;
+			margin:5px;
+			padding:5px;
+		}
+		div.container ol li{
+			list-style:disc;
+			margin-left:20px;
+		}
+		div.container { display: none }
+		.container label.error {
+			display: inline;
+		}
+		form.cmxform { width: 30em; }
+		form.cmxform label.error {
+			display: block;
+			margin-left: 1em;
+			width: auto;
+		}
+	</style>
+	
+    <link rel="stylesheet" href="css/screen.css">
+	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.js"></script>
+	
+</head>
+<body>
+<div id="main">
+	<form method="get" class="cmxform" id="form1" action="">
+		<fieldset>
+			<legend>登陆表单</legend>
+			<p>
+				<label>用户名</label>
+				
+				<input name="user" title="请输入你的用户名（至少三个字符）" required  minlength="3">
+			</p>
+			<p>
+				<label>密码</label>
+				<input name="password" maxlength="12" type="password" title="请输入你的密码（5-12个字符）" required minlength="5">
+			</p>
+			<p>
+				<div class="error"></div>
+			</p>
+			<p>
+				<input class="submit" type="submit" value="登录"/>
+			</p>
+		</fieldset>
+	</form>
+	<!--错误容器-->
+	<div class="container">
+		<h4>你提交的表单存在严重的错误，请参见下面的细节。</h4>
+		<ol>
+			<li><label for="email" class="error">请输入你的电子邮件地址</label></li>
+			<li><label for="phone" class="error">请输入你的电话<b>号码</b></label></li>
+			<li><label for="address" class="error">请输入你的地址（至少3个字符）</label></li>
+			<li><label for="avatar" class="error">请选择一个图像（Png,jpg,jpeg,gif）</label></li>
+			<li><label for="cv" class="error">请选择一文档（doc,doocx,txt,pdf）</label></li>
+		</ol>
+	</div>
+	
+	<form class="cmxform" id="form2" method="get" action="">
+		<fieldset>
+			<legend>验证一个完整的表单</legend>
+			<p>
+				<label for="email">Email</label>
+				<input id="email" name="email" required type="email">
+			</p>
+			<p>
+			<label for="agree">喜欢的颜色</label>
+			<select id="color" name="color" title="请选择你喜欢的颜色！" required>
+				<option></option>
+				<option>红色</option>
+				<option>蓝色</option>
+				<option>黄色</option>
+			</select>
+			</p>
+			<p>
+				<label for="phone">电话</label>
+				<input id="phone" name="phone"  type="number" rangelength="[2,8]" required>
+			</p>
+			<p>
+				<label for="address">地址</label>
+				<input id="address" name="address" minlength="3" required>
+			</p>
+			<p>
+				<label for="advatar">头像</label>
+				<input id="advatar" name="advatar" type="file"  required>
+			</p>
+			<p>
+				<label for="agree">请同意我们的条款</label>
+				<input type="checkbox" id="agree" name="agree" class="checkbox" required>
+			</p>
+			<p>
+				<input type="submit" class="submit" value="提交"/>
+				<input type="submit" class="cancel" value="取消"/ >
+			</p>
+		</fieldset>
+	</form>
+	
+	<div id="container">
+		<h4>你提交的表单存在严重的错误，请参见下面的细节。</h4>
+	</div>
+</div>
+<script>
+// 只用于演示
+$.validator.setDefaults({
+	submitHandler: function() {
+		alert("已提交！（点击取消按钮跳过验证）");
+	}
+});
+
+$().ready(function() {
+	$("#form1").validate({
+		errorLabelContainer: $("#form1 div.error")
+	});
+
+	var container = $('div.container');
+	// 当提交时验证表单
+	var validator = $("#form2").validate({
+		errorContainer: container,
+		errorLabelContainer: $("ol", container),
+		wrapper: 'li'
+	});
+
+	$(".cancel").click(function() {
+		validator.resetForm();
+	});
+});
+</script>
+</body>
+</html>
